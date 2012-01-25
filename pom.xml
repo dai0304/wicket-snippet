@@ -85,6 +85,19 @@
       <version>${logback-version}</version>
     </dependency>
   </dependencies>
+  <repositories>
+    <!-- for uncommons / baseunits -->
+    <repository>
+      <id>maven.xet.jp-release</id>
+      <name>Daisuke Maven Repository</name>
+      <url>http://maven.xet.jp/release</url>
+    </repository>
+    <repository>
+      <id>maven.xet.jp-snapshot</id>
+      <name>Daisuke Maven Repository</name>
+      <url>http://maven.xet.jp/snapshot</url>
+    </repository>
+  </repositories>
   <properties>
     <slf4j-version>1.6.4</slf4j-version>
     <logback-version>1.0.0</logback-version>

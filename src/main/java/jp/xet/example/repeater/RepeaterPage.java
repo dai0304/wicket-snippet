@@ -1,8 +1,11 @@
 package jp.xet.example.repeater;
 
 import jp.xet.example.DataProviderImpl;
+import jp.xet.example.repeater.MoreRepeaterPanel.PopulationProcessor;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.repeater.Item;
 import org.wicketstuff.annotation.mount.MountPath;
 
 @MountPath("/repeater")
@@ -10,6 +13,11 @@ import org.wicketstuff.annotation.mount.MountPath;
 public class RepeaterPage extends WebPage {
 	
 	public RepeaterPage() {
-		add(new MoreRepeaterPanel1<String>("repeater", new DataProviderImpl(1000), 10));
+		add(new MoreRepeaterPanel<String>("repeater", new DataProviderImpl(10), 2, new PopulationProcessor<String>() {
+			
+			public void populateItem(String id, Item<String> item) {
+				item.add(new Label(id, item.getModelObject().toString()));
+			}
+		}));
 	}
 }

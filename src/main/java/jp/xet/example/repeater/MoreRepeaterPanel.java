@@ -1,9 +1,10 @@
 package jp.xet.example.repeater;
 
+import java.io.Serializable;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -17,43 +18,56 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
  * @author daisuke
  */
 @SuppressWarnings("serial")
-public class MoreRepeaterPanel<T> extends Panel {
+public final class MoreRepeaterPanel<T> extends Panel {
 	
-	public MoreRepeaterPanel(String id, IDataProvider<T> dataProvider, int itemsParPage) {
-		this(id, dataProvider, itemsParPage, 0);
+	public MoreRepeaterPanel(String id, IDataProvider<T> dataProvider, int itemsParPage, PopulationProcessor<T> p) {
+		this(id, dataProvider, itemsParPage, p, 0);
 	}
 	
-	MoreRepeaterPanel(String id, final IDataProvider<T> dataProvider, final int itemsParPage, final int index) {
+	MoreRepeaterPanel(String id, final IDataProvider<T> dataProvider, final int itemsParPage,
+			final PopulationProcessor<T> p, final int index) {
 		super(id);
 		
-		DataView<T> view = new DataView<T>("dataView", dataProvider, itemsParPage) {
+		DataView<T> view = new DataView<T>("repeatingList", dataProvider, itemsParPage) {
 			
 			@Override
 			protected void populateItem(Item<T> item) {
-				item.add(new Label("label", item.getModelObject().toString()));
+				p.populateItem("content", item);
 			}
 		};
 		view.setCurrentPage(index);
 		add(view);
 		
-		final WebMarkupContainer moreContent = new WebMarkupContainer("moreContent");
-		moreContent.setOutputMarkupId(true);
-		AjaxLink<Void> moreLink = new AjaxLink<Void>("moreLink") {
+		final WebMarkupContainer next = new WebMarkupContainer("next");
+		next.setOutputMarkupId(true);
+		next.setOutputMarkupPlaceholderTag(true);
+		next.setVisible(false);
+		add(next);
+		
+		final WebMarkupContainer container = new WebMarkupContainer("container");
+		container.setOutputMarkupId(true);
+		add(container);
+		
+		AjaxLink<Void> button = new AjaxLink<Void>("repeatingButton") {
+			
+			private static final long serialVersionUID = 1L;
+			
 			
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				WebMarkupContainer replaceMoreContent =
-						new MoreRepeaterPanel<T>(moreContent.getId(), dataProvider, itemsParPage, index + 1);
-				moreContent.replaceWith(replaceMoreContent);
-				setVisible(false);
-				
-				target.add(replaceMoreContent, this);
+				Panel panel = new MoreRepeaterPanel<T>(next.getId(), dataProvider, itemsParPage, p, index + 1);
+				next.replaceWith(panel);
+				container.setVisible(false);
+				target.add(container, panel);
 			}
 		};
-		moreLink.setOutputMarkupId(true);
-		moreContent.add(moreLink);
-		add(moreContent);
+		container.add(button);
+	}
+	
+	
+	public interface PopulationProcessor<T> extends Serializable {
 		
-		setRenderBodyOnly(true);
+		void populateItem(String id, Item<T> item);
+		
 	}
 }
