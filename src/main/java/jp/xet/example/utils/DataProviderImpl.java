@@ -14,7 +14,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package jp.xet.example;
+package jp.xet.example.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

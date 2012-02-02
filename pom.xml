@@ -9,6 +9,34 @@
   <packaging>war</packaging>
   <build>
     <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+    <resources>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <filtering>false</filtering>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <filtering>false</filtering>
+        <directory>src/test/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -107,8 +135,8 @@
     <slf4j-version>1.6.4</slf4j-version>
     <logback-version>1.0.0</logback-version>
     <guava-version>10.0.1</guava-version>
-    <wicket-version>1.5.3</wicket-version>
-    <wicketstuff-version>1.5.4</wicketstuff-version>
+    <wicket-version>[1.5.4, 1.6.0)</wicket-version>
+    <wicketstuff-version>[1.5.4, 1.6.0)</wicketstuff-version>
     <uncommons-wicket-version>1.0-SNAPSHOT</uncommons-wicket-version>
   </properties>
 </project>
