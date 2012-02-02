@@ -1,7 +1,8 @@
 package jp.xet.example.repeater;
 
 import jp.xet.example.DataProviderImpl;
-import jp.xet.example.repeater.MoreRepeaterPanel.PopulationProcessor;
+import jp.xet.uncommons.wicket.gp.MoreRepeaterPanel;
+import jp.xet.uncommons.wicket.gp.MoreRepeaterPanel.PopulationProcessor;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
